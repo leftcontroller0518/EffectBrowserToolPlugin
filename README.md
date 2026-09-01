@@ -1,0 +1,2 @@
+# EffectBrowserToolPlugin
+YMM4プラグイン、エフェクトブラウザプラグイン
