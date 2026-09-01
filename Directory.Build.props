@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- ご自身のYMM4インストールフォルダのパスに書き換えてください（末尾は \ 必須） -->
+    <YMM4DirPath>C:\YMM4\</YMM4DirPath>
+  </PropertyGroup>
+</Project>

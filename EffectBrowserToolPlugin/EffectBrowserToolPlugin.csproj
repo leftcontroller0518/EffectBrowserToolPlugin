@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- YMM4 v4.47.0.0以降は.NET 10が必須です。古いYMM4を使っている場合は
+         net8.0-windows10.0.19041.0 / net7.0-windows10.0.19041.0 に読み替えてください -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>EffectBrowserToolPlugin</RootNamespace>
+    <AssemblyName>EffectBrowserToolPlugin</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      YMM4本体のプラグイン用アセンブリへの参照です。
+      パスはリポジトリ直下の Directory.Build.props で定義した $(YMM4DirPath) を使います。
+      Private=false / CopyLocal相当をfalseにして、YMM4本体側のDLLをビルド出力に
+      二重に含めないようにしています（バージョン不一致を避けるため）。
+    -->
+    <Reference Include="YukkuriMovieMaker.Plugin">
+      <HintPath>$(YMM4DirPath)YukkuriMovieMaker.Plugin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="YukkuriMovieMaker.Controls">
+      <HintPath>$(YMM4DirPath)YukkuriMovieMaker.Controls.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+    ビルド後にDLL（とpdb）をYMM4のuser\pluginフォルダへ自動コピーします。
+    これによりビルド→YMM4起動だけで動作確認できます。
+  -->
+  <Target Name="CopyToYmm4PluginFolder" AfterTargets="Build">
+    <ItemGroup>
+      <PluginOutputFiles Include="$(OutDir)$(AssemblyName).dll" />
+      <PluginOutputFiles Include="$(OutDir)$(AssemblyName).pdb" Condition="Exists('$(OutDir)$(AssemblyName).pdb')" />
+    </ItemGroup>
+    <MakeDir Directories="$(YMM4DirPath)user\plugin\$(AssemblyName)\" Condition="!Exists('$(YMM4DirPath)user\plugin\$(AssemblyName)\')" />
+    <Copy SourceFiles="@(PluginOutputFiles)" DestinationFolder="$(YMM4DirPath)user\plugin\$(AssemblyName)\" SkipUnchangedFiles="false" />
+  </Target>
+
+</Project>
