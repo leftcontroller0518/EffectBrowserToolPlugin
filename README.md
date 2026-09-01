@@ -1,2 +1,26 @@
 # EffectBrowserToolPlugin
 YMM4プラグイン、エフェクトブラウザプラグイン
+
+## インストール
+[Release](https://github.com/leftcontroller0518/EffectBrowserToolPlugin/releases)にある最新バージョンのReleaseをクリックし、ymmeファイルをダウンロード。
+その後ymmeファイルを実行しインストール。
+
+## 使い方
+インストール後YMM4画面上部のツールタブから「エフェクト一覧」を選択し、ウィンドウを呼び出し。
+YMM4がAvalonDockなので簡単に画像のようにドッキング可能です。
+<img width="2557" height="1386" alt="image" src="https://github.com/user-attachments/assets/cc57b94c-58ba-42d1-a2a6-563a30331070" />
+
+## わかりにくいけどこれも便利だよ
+添付画像のように右クリックメニューからこのような項目が呼び出せます。ぜひご活用ください
+<img width="322" height="123" alt="image" src="https://github.com/user-attachments/assets/dc10279c-1d42-4003-a18a-407d0ca5ba41" />
+
+
+## コードについて
+- このプラグインはclaude、Codexを用いて制作しています。そのためコード内に複数のコメントがあると思われます。予めご了承ください。
+- また、当リポジトリはMIT LICENSEを採用しているため、ライセンス制限の範囲内であればご自由にお使いいただけます。
+
+## バグについて
+- バグについては私左コントローラーの[X(旧Twitter)のDM](https://x.com/aoihou0518)へどうぞ
+
+## changelog
+- 2026/09/01 1.0.0 公開
