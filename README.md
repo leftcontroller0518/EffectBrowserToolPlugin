@@ -1,6 +1,7 @@
 # EffectBrowserToolPlugin
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](#)
+
 YMM4プラグイン、エフェクトブラウザプラグイン
 
 ## インストール
