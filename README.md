@@ -18,6 +18,7 @@ YMM4がAvalonDockなので簡単に画像のようにドッキング可能です
 
 ## 追記
 添付画像のように右クリックメニューからこのような項目が呼び出せます。ぜひご活用ください
+
 <img width="322" height="123" alt="image" src="https://github.com/user-attachments/assets/dc10279c-1d42-4003-a18a-407d0ca5ba41" />
 
 ## 謝罪
