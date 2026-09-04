@@ -13,7 +13,8 @@
 
 ## 使い方
 インストール後YMM4画面上部のツールタブから「エフェクト一覧」を選択し、ウィンドウを呼び出し。
-YMM4がAvalonDockなので簡単に画像のようにドッキング可能です。
+
+YMM4がAvalonDock対応なので簡単に画像のようにドッキング可能です。
 <img width="2557" height="1386" alt="image" src="https://github.com/user-attachments/assets/cc57b94c-58ba-42d1-a2a6-563a30331070" />
 
 ## 追記
