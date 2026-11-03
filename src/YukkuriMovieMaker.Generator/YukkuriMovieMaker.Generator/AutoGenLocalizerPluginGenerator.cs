@@ -1,0 +1,301 @@
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.IO;
+using System.Linq;
+using CsvHelper;
+using System.Text;
+
+//警告に従ってプロジェクトの設定を変更するとうまく動作しなくなる
+//ずっと警告が表示されるのも気持ち悪いので無効化
+#pragma warning disable RS1036
+//アナライザーのリリーストラッキング(AnalyzerReleases.*.md)はこの単一診断には過剰なため無効化
+#pragma warning disable RS2008
+
+namespace YukkuriMovieMaker.Generator
+{
+    [Generator(LanguageNames.CSharp)]
+    public sealed class AutoGenLocalizerPluginGenerator : IIncrementalGenerator
+    {
+        //ローカライズキーがCSV内で重複している場合のエラー。
+        //ジェネレーターはDistinctで先勝ちにして黙って後続を捨てるため、
+        //気付かずに別文言を参照する事故を防ぐためビルドを止める。
+        static readonly DiagnosticDescriptor DuplicateKeyDescriptor = new(
+            id: "YMMLOC001",
+            title: "ローカライズキーの重複",
+            messageFormat: "ローカライズキー '{0}' が重複しています。重複している行のいずれかを削除するか、キーをユニークにしてください。",
+            category: "Localization",
+            defaultSeverity: DiagnosticSeverity.Error,
+            isEnabledByDefault: true);
+
+        public void Initialize(IncrementalGeneratorInitializationContext context)
+        {
+            //AutoGenLocalizerAttributeを生成
+            context.RegisterPostInitializationOutput(context =>context.AddSource(
+                "AutoGenLocalizerAttribute.g.cs",
+                $@"namespace YukkuriMovieMaker.Generator
+{{
+    [System.AttributeUsage(System.AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    sealed class AutoGenLocalizerAttribute : System.Attribute
+    {{
+        public AutoGenLocalizerAttribute()
+        {{
+        }}
+    }}
+}}"));
+
+            //コンパイル時に一度[AutoGenLocalizer]のINamedTypeSymbolを通知するValueProvider
+            var attributeSymbolProvider =
+                context.CompilationProvider.Select(
+                    (compilation, token) =>
+                    {
+                        return
+                            compilation.GetTypeByMetadataName("YukkuriMovieMaker.Generator.AutoGenLocalizerAttribute")
+                            ?? throw new InvalidOperationException("AutoGenLocalizerAttribute not found");
+                    });
+
+            //プロジェクト中のcsvファイルの変更通知するValueProvider
+            //利用側の.csprojに
+            //<ItemGroup>
+            //  <AdditionalFiles Include="**/*.csv" />
+            //</ItemGroup>
+            //を追加する必要がある
+            var csvProvider =
+                context.AdditionalTextsProvider
+                .Where(x => x.Path.EndsWith(".csv"))
+                .Collect()
+                .Select((x, token)=> x.Select(x=>x.GetText(token)?.GetContentHash()));
+
+            //Attributeを1つ以上もつpartial classの変更通知をするValueProvider
+            var classProvider =
+                context.SyntaxProvider.CreateSyntaxProvider(
+                    predicate: (node, token) =>
+                    {
+                        token.ThrowIfCancellationRequested();
+                        return node is ClassDeclarationSyntax { AttributeLists.Count: > 0 };
+                    },
+                    transform: (context, token) =>
+                    {
+                        token.ThrowIfCancellationRequested();
+                        if (context.Node is not ClassDeclarationSyntax classDecl)
+                            return default;
+
+                        var symbol = context.SemanticModel.GetDeclaredSymbol(classDecl, token);
+                        if (symbol is null)
+                            return default;
+
+                        if (!classDecl.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword)))
+                            return default;
+
+                        var filePath = context.Node.SyntaxTree.FilePath;
+                        if (string.IsNullOrEmpty(filePath))
+                            return default;
+                        var csvFile = Path.ChangeExtension(filePath, ".csv");
+
+                        return (symbol, classDecl.Modifiers, csvFile);
+                    }
+                )
+                .Where(x => x is (not null, _, _));
+
+            //各プロバイダの変更通知を受け取り、AutoGenLocalizerAttributeが存在し、classと同名のcsvファイルが存在する場合にのみ通知を通すValueProvider
+            var provider = 
+                classProvider
+                .Combine(attributeSymbolProvider)
+                .Combine(csvProvider)
+                .Select((x, token) =>
+                {
+                    token.ThrowIfCancellationRequested();
+                    var (Left, Right) = x.Left;
+                    var (classSymbol, modifiers, csvFile) = Left;
+                    var attributeSymbol = Right;
+
+                    var csvHash = x.Right;
+
+                    return (classSymbol, modifiers, attributeSymbol, csvFile, csvHash);
+                })
+                .Where(x => File.Exists(x.csvFile))
+                .Where(x => x.classSymbol.GetAttributes().Any(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, x.attributeSymbol)));
+
+            //プロバイダの変更通知を受け取り、ソースコードを生成する
+            context.RegisterSourceOutput(
+                provider,
+                (context, tuple) =>
+                {
+                    var token = context.CancellationToken;
+                    token.ThrowIfCancellationRequested();
+
+                    var (symbol, modifiers, attributeSymbol, csvFile, csvHash) = tuple;
+
+                    var csvConfig = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
+                    {
+                        HasHeaderRecord = true,
+                        Delimiter = ",",
+                        IgnoreBlankLines = true,
+                        TrimOptions = CsvHelper.Configuration.TrimOptions.Trim,
+                        MissingFieldFound = null,
+                    };
+                    var allRecords = ReadRecords(csvFile, csvConfig);
+                    token.ThrowIfCancellationRequested();
+
+                    //キー重複を検出してエラー報告する（Distinctで黙って捨てる前に検査する）
+                    ReportDuplicateKeys(context, csvFile, allRecords);
+
+                    var records = allRecords.Distinct(new TranslateRecordKeyComparer()).ToList();
+                    token.ThrowIfCancellationRequested();
+
+                    //resxファイルをソースフォルダに直接出力する
+                    //.csとは異なりAddSource等で追加できないため
+                    //内容が変わっていない場合は書き換えない（ファイルのタイムスタンプ更新を回避し、CoreCompile再実行を防ぐ）
+                    foreach (var langCode in TranslateRecord.LangCodes)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        var resxPath = langCode is "ja-jp" ?
+                            Path.ChangeExtension(csvFile, ".resx")
+                            : Path.ChangeExtension(csvFile, $".{langCode}.resx");
+
+                        using var memStream = new MemoryStream();
+                        using (var writer = new ResXResourceWriter(memStream))
+                        {
+                            writer.AddResource("CurrentCulture", langCode);
+                            foreach (var record in records)
+                            {
+                                var value = record.GetValue(langCode);
+                                if (string.IsNullOrEmpty(record.Key) || string.IsNullOrEmpty(value))
+                                    continue;
+                                writer.AddResource(record.Key!, value!);
+                            }
+                        }
+
+                        var newBytes = memStream.ToArray();
+                        if (File.Exists(resxPath))
+                        {
+                            var existing = File.ReadAllBytes(resxPath);
+                            if (BytesEqual(existing, newBytes))
+                                continue;
+                        }
+                        File.WriteAllBytes(resxPath, newBytes);
+                    }
+
+                    var sourceBuilder = new StringBuilder();
+                    sourceBuilder.AppendLine($@"using YukkuriMovieMaker.Plugin;
+
+namespace {symbol.ContainingNamespace.ToDisplayString()}
+{{
+    public {string.Join(" ", modifiers.Select(x => x.ToString()))} class {symbol.Name} : ILocalizePlugin
+    {{
+        public string Name => ""{symbol.Name}多言語対応プラグイン（自動生成）"";
+        public void SetCulture(System.Globalization.CultureInfo cultureInfo) => {symbol.Name}.Culture = cultureInfo;
+
+
+        private static System.Resources.ResourceManager _resourceManager;
+        private static System.Globalization.CultureInfo _cultureInfo;
+
+        public static System.Resources.ResourceManager ResourceManager
+        {{
+            get
+            {{
+                if (_resourceManager is null)
+                    _resourceManager = new System.Resources.ResourceManager(typeof({symbol.Name}));
+                return _resourceManager;
+            }}
+        }}
+
+        public static System.Globalization.CultureInfo Culture
+        {{
+            get => _cultureInfo;
+            set => _cultureInfo = value;
+        }}
+
+        public static string GetString(string key)
+        {{
+            return ResourceManager.GetString(key, Culture);
+        }}");
+                    sourceBuilder.AppendLine($@"        ///<summary>");
+                    sourceBuilder.AppendLine($@"        /// 言語コード");
+                    sourceBuilder.AppendLine($@"        ///</summary>");
+                    sourceBuilder.AppendLine($@"        public static string CurrentCulture => GetString(""CurrentCulture"");");
+                    foreach (var record in records)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        sourceBuilder.AppendLine($@"        ///<summary>");
+                        sourceBuilder.AppendLine($@"        /// {record.Japanese?.Split(["\r\n", "\r", "\n"], StringSplitOptions.None).Aggregate((a,b)=>$"{a}\r\n        /// {b}")}");
+                        sourceBuilder.AppendLine($@"        ///</summary>");
+                        sourceBuilder.AppendLine($@"        public static string {record.Key} => GetString(""{record.Key}"");");
+                    }
+                    sourceBuilder.AppendLine(@$"    }}
+}}");
+                    //生成したソースコードを追加
+                    context.AddSource($"{symbol.ContainingNamespace.ToDisplayString()}.{symbol.Name}.g.cs", sourceBuilder.ToString());
+                });
+        }
+
+        static System.Collections.Generic.List<TranslateRecord> ReadRecords(string csvFile, CsvHelper.Configuration.CsvConfiguration csvConfig)
+        {
+            using var streamReader = new StreamReader(csvFile);
+            using var csvReader = new CsvReader(streamReader, csvConfig);
+            return csvReader.GetRecords<TranslateRecord>().ToList();
+        }
+
+        //CSV内で同じKeyが2回以上現れる場合に、2回目以降の各出現に対してエラーを報告する。
+        //位置はCSVファイル内の該当行を指す（先頭フィールドがKeyなので "Key," で始まる行を探す）。
+        static void ReportDuplicateKeys(SourceProductionContext context, string csvFile, System.Collections.Generic.List<TranslateRecord> records)
+        {
+            var keys = records
+                .Select(x => x.Key)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .GroupBy(x => x)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+            if (keys.Count == 0)
+                return;
+
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(csvFile);
+            }
+            catch
+            {
+                lines = System.Array.Empty<string>();
+            }
+
+            foreach (var key in keys)
+            {
+                var prefix = key + ",";
+                var lineNumbers = new System.Collections.Generic.List<int>();
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].StartsWith(prefix, System.StringComparison.Ordinal))
+                        lineNumbers.Add(i);
+                }
+
+                //2回目以降の出現にエラーを付ける。行が特定できない場合はLocationなしで報告する。
+                if (lineNumbers.Count >= 2)
+                {
+                    foreach (var lineIndex in lineNumbers.Skip(1))
+                    {
+                        var span = new Microsoft.CodeAnalysis.Text.LinePositionSpan(
+                            new Microsoft.CodeAnalysis.Text.LinePosition(lineIndex, 0),
+                            new Microsoft.CodeAnalysis.Text.LinePosition(lineIndex, prefix.Length));
+                        var location = Location.Create(csvFile, new Microsoft.CodeAnalysis.Text.TextSpan(0, 0), span);
+                        context.ReportDiagnostic(Diagnostic.Create(DuplicateKeyDescriptor, location, key));
+                    }
+                }
+                else
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(DuplicateKeyDescriptor, Location.None, key));
+                }
+            }
+        }
+
+        static bool BytesEqual(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++)
+                if (a[i] != b[i]) return false;
+            return true;
+        }
+    }
+}
