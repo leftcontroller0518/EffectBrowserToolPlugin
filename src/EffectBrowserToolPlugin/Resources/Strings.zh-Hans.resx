@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="ToolWindowTitle" xml:space="preserve"><value>效果浏览器</value></data>
+  <data name="SetSearchKeywords" xml:space="preserve"><value>设置搜索关键词...</value></data>
+  <data name="AddToFolder" xml:space="preserve"><value>添加到文件夹...</value></data>
+  <data name="ToggleFavorite" xml:space="preserve"><value>切换收藏</value></data>
+  <data name="Apply" xml:space="preserve"><value>应用</value></data>
+  <data name="FolderDeleteTooltip" xml:space="preserve"><value>从文件夹中移除</value></data>
+  <data name="NoFavoritesText" xml:space="preserve"><value>没有已收藏的效果</value></data>
+  <data name="TabFolder" xml:space="preserve"><value>文件夹</value></data>
+  <data name="TabActive" xml:space="preserve"><value>正在应用</value></data>
+  <data name="GetActiveEffectsButton" xml:space="preserve"><value>获取选中项的效果</value></data>
+  <data name="AddToFolderDialogTitle" xml:space="preserve"><value>添加到文件夹</value></data>
+  <data name="AddToFolderPrompt" xml:space="preserve"><value>请输入目标文件夹名称：</value></data>
+  <data name="DefaultFolderName" xml:space="preserve"><value>收藏</value></data>
+  <data name="DeleteFolderConfirmTitle" xml:space="preserve"><value>确认删除文件夹</value></data>
+  <data name="DeleteFolderConfirmMessage" xml:space="preserve"><value>是否删除文件夹 '{0}'？\n此操作不可撤销。</value></data>
+  <data name="FolderDeletedMessage" xml:space="preserve"><value>已删除文件夹 '{0}'。</value></data>
+  <data name="AddedToFolderMessage" xml:space="preserve"><value>{0} 已添加到文件夹 '{1}'。</value></data>
+  <data name="HeaderEffectsList" xml:space="preserve"><value>效果列表</value></data>
+  <data name="RefreshButton" xml:space="preserve"><value>刷新</value></data>
+  <data name="TabHistory" xml:space="preserve"><value>历史</value></data>
+  <data name="MovedInFolderMessage" xml:space="preserve"><value>已在文件夹内移动效果。</value></data>
+  <data name="RemovedFromFolderMessage" xml:space="preserve"><value>{0} 已从文件夹 '{1}' 中移除。</value></data>
+  <data name="SearchWordSetMessage" xml:space="preserve"><value>已为 {0} 设置搜索关键词。</value></data>
+  <data name="NoSelectedItemsMessage" xml:space="preserve"><value>未选中任何可支持的项目。</value></data>
+  <data name="AppliedToItemsMessage" xml:space="preserve"><value>{0} 已应用于 {1} 个项目。</value></data>
+  <data name="ApplyFailedUnsupported" xml:space="preserve"><value>应用失败（不支持的项目）。</value></data>
+  <data name="ApplyError" xml:space="preserve"><value>应用错误: {0}</value></data>
+  <data name="ComboSavedMessage" xml:space="preserve"><value>已保存组合 '{0}'。</value></data>
+  <data name="ComboAppliedMessage" xml:space="preserve"><value>已应用组合 '{0}'（{1} 个效果）。</value></data>
+  <data name="DeleteActiveEffectTooltip" xml:space="preserve"><value>删除此效果</value></data>
+  <data name="SearchKeywordsTitle" xml:space="preserve"><value>搜索关键词</value></data>
+  <data name="SearchKeywordsPromptFormat" xml:space="preserve"><value>为 {0} 输入搜索关键词（用逗号分隔）:</value></data>
+  <data name="ToolTipDescriptionFormat" xml:space="preserve"><value>{0} ({1})\n类别: {2}\n类型: {3}\n使用次数: {4}\n搜索关键词: {5}</value></data>
+  <data name="KindVideo" xml:space="preserve"><value>映像</value></data>
+  <data name="Favorites" xml:space="preserve"><value>收藏</value></data>
+  <data name="KindAudio" xml:space="preserve"><value>音频</value></data>
+  <data name="TabSearch" xml:space="preserve"><value>搜索</value></data>
+  <data name="SearchPlaceholder" xml:space="preserve"><value>搜索效果...</value></data>
+  <data name="NoRecentText" xml:space="preserve"><value>没有最近使用的效果</value></data>
+  <data name="EffectEtcGroupName" xml:space="preserve"><value>其他</value></data>
+</root>

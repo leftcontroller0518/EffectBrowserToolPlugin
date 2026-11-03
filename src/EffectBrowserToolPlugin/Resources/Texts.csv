@@ -1,0 +1,47 @@
+Key,comment,ja-jp,en-us,zh-cn,zh-tw
+ToolWindowTitle,,エフェクトブラウザ,Effect Browser,效果浏览器,效果瀏覽器
+SetSearchKeywords,,検索ワードを設定...,Set search keywords...,设置搜索关键词...,設定搜尋關鍵字...
+AddToFolder,,フォルダに追加...,Add to folder...,添加到文件夹...,新增到資料夾...
+ToggleFavorite,,お気に入りを切り替え,Toggle favorite,切换收藏,切換收藏
+Apply,,適用,Apply,应用,套用
+FolderDeleteTooltip,,フォルダから削除,Remove from folder,从文件夹中移除,從資料夾移除
+NoFavoritesText,,お気に入りに登録されたエフェクトはありません,No favorite effects registered,没有已收藏的效果,沒有已收藏的效果
+TabFolder,,フォルダ,Folder,文件夹,資料夾
+TabActive,,適用中,Active,正在应用,正在套用
+GetActiveEffectsButton,,選択中アイテムのエフェクトを取得,Get effects from selected items,获取选中项的效果,取得選取項目的效果
+AddToFolderDialogTitle,,フォルダに追加,Add to folder,添加到文件夹,新增到資料夾
+AddToFolderPrompt,,追加先のフォルダ名を入力してください:,Enter target folder name:,请输入目标文件夹名称：,請輸入目標資料夾名稱：
+DefaultFolderName,,お気に入り,Favorites,收藏,收藏
+DeleteFolderConfirmTitle,,フォルダ削除の確認,Confirm folder deletion,确认删除文件夹,確認刪除資料夾
+DeleteFolderConfirmMessage,,フォルダ '{0}' を削除しますか？\nこの操作は元に戻せません。,Delete folder '{0}'?\nThis operation cannot be undone.,是否删除文件夹 '{0}'？\n此操作不可撤销。,是否刪除資料夾 '{0}'？\n此操作不可復原。
+DeleteFolderButton,,フォルダ削除,Delete folder,删除文件夹,刪除資料夾
+FolderDeletedMessage,,フォルダ「{0}」を削除しました。,Folder '{0}' deleted.,已删除文件夹 '{0}'。,已刪除資料夾 '{0}'。
+AddedToFolderMessage,,{0} をフォルダ「{1}」に追加しました.,{0} added to folder '{1}'.,{0} 已添加到文件夹 '{1}'.,{0} 已新增到資料夾 '{1}'。
+HeaderEffectsList,,エフェクト一覧,Effects list,效果列表,效果清單
+RefreshButton,,更新,Refresh,刷新,重新整理
+TabHistory,,履歴,History,历史,歷史
+MovedInFolderMessage,,フォルダ内のエフェクトを移動しました。,Moved effect within folder.,已在文件夹内移动效果。,已在資料夾內移動效果。
+RemovedFromFolderMessage,,{0} をフォルダ「{1}」から削除しました.,{0} removed from folder '{1}'.,{0} 已从文件夹 '{1}' 中移除.,{0} 已從資料夾 '{1}' 中移除。
+SearchWordSetMessage,,{0} の検索ワードを設定しました。,Search keywords set for {0}.,已为 {0} 设置搜索关键词。,已為 {0} 設定搜尋關鍵字。
+NoSelectedItemsMessage,,選択中のアイテム（対応タイプ）がありません。,No selected items (supported type not found).,未选中任何可支持的项目。,未選取任何可支援的項目。
+AppliedToItemsMessage,,{0} を {1} 件のアイテムに適用しました。, {0} applied to {1} items.,{0} 已应用于 {1} 个项目.,{0} 已應用於 {1} 個項目。
+ApplyFailedUnsupported,,適用に失敗しました（対応していないアイテムです）。,Apply failed (unsupported item).,应用失败（不支持的项目）。,應用失敗（不支援的項目）。
+ApplyError,,適用エラー: {0},Apply error: {0},应用错误: {0},套用錯誤: {0}
+ComboSavedMessage,,コンボ「{0}」を保存しました。,Saved combo '{0}'.,已保存组合 '{0}'.,已儲存組合 '{0}'。
+ComboAppliedMessage,,コンボ「{0}」のエフェクト（{1}個）を適用しました。,Applied combo '{0}' ({1} effects).,已应用组合 '{0}'（{1} 个效果）。,已套用組合 '{0}'（{1} 個效果）。
+DeleteActiveEffectTooltip,,このエフェクトを削除,Delete this effect,删除此效果,刪除此效果
+SearchKeywordsTitle,,検索ワード,Search keywords,搜索关键词,搜尋關鍵字
+SearchKeywordsPromptFormat,,{0} の検索ワードを入力してください（カンマ区切り）:,Enter search keywords for {0} (comma separated):,{0} 的搜索关键词（用逗号分隔）:,請為 {0} 輸入搜尋關鍵字（以逗號分隔）:
+ToolTipDescriptionFormat,,{0} ({1})\nカテゴリ: {2}\n型: {3}\n使用回数: {4}\n検索ワード: {5},{0} ({1})\nCategory: {2}\nType: {3}\nApply count: {4}\nKeywords: {5},{0} ({1})\n类别: {2}\n类型: {3}\n使用次数: {4}\n搜索关键词: {5},{0} ({1})\n類別: {2}\n類型: {3}\n使用次數: {4}\n搜尋關鍵字: {5}
+KindVideo,,映像,Video,映像,映像
+KindAudio,,音声,Audio,音频,音訊
+Favorites,,お気に入り,Favorites,收藏,收藏
+TabSearch,,検索,Search,搜索,搜尋
+SearchPlaceholder,,エフェクト名で検索...,Search effects...,搜索效果...,搜尋效果...
+NoRecentText,,最近使用したエフェクトはありません,No recently used effects,没有最近使用的效果,沒有最近使用的效果
+EffectEtcGroupName,,その他,Other,其他,其他
+StandardItemEditorHeader,,標準アイテム・エフェクト設定,Standard Settings,标准设置,標準設定
+DisplayModeSplit,,分割表示,Split,分割,分割
+DisplayModeEditorOnly,,詳細設定のみ,Settings Only,仅设置,僅設定
+DisplayModeListOnly,,簡易一覧のみ,List Only,仅列表,僅清單
+NoItemEditorFound,,アイテム設定画面を初期化できませんでした。,Failed to initialize item settings view.,未能初始化项目设置视图。,未能初始化項目設定視圖。

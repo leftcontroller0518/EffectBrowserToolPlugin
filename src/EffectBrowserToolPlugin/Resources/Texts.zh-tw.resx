@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+<data name="CurrentCulture" xml:space="preserve"><value>zh-tw</value></data>
+<data name="ToolWindowTitle" xml:space="preserve"><value>效果瀏覽器</value></data>
+<data name="SetSearchKeywords" xml:space="preserve"><value>設定搜尋關鍵字...</value></data>
+<data name="AddToFolder" xml:space="preserve"><value>新增到資料夾...</value></data>
+<data name="ToggleFavorite" xml:space="preserve"><value>切換收藏</value></data>
+<data name="Apply" xml:space="preserve"><value>套用</value></data>
+<data name="FolderDeleteTooltip" xml:space="preserve"><value>從資料夾移除</value></data>
+<data name="NoFavoritesText" xml:space="preserve"><value>沒有已收藏的效果</value></data>
+<data name="TabFolder" xml:space="preserve"><value>資料夾</value></data>
+<data name="TabActive" xml:space="preserve"><value>正在套用</value></data>
+<data name="GetActiveEffectsButton" xml:space="preserve"><value>取得選取項目的效果</value></data>
+<data name="AddToFolderDialogTitle" xml:space="preserve"><value>新增到資料夾</value></data>
+<data name="AddToFolderPrompt" xml:space="preserve"><value>請輸入目標資料夾名稱：</value></data>
+<data name="DefaultFolderName" xml:space="preserve"><value>收藏</value></data>
+<data name="DeleteFolderConfirmTitle" xml:space="preserve"><value>確認刪除資料夾</value></data>
+<data name="DeleteFolderConfirmMessage" xml:space="preserve"><value>是否刪除資料夾 '{0}'？\n此操作不可復原。</value></data>
+<data name="DeleteFolderButton" xml:space="preserve"><value>刪除資料夾</value></data>
+<data name="FolderDeletedMessage" xml:space="preserve"><value>已刪除資料夾 '{0}'。</value></data>
+<data name="AddedToFolderMessage" xml:space="preserve"><value>{0} 已新增到資料夾 '{1}'。</value></data>
+<data name="HeaderEffectsList" xml:space="preserve"><value>效果清單</value></data>
+<data name="RefreshButton" xml:space="preserve"><value>重新整理</value></data>
+<data name="TabHistory" xml:space="preserve"><value>歷史</value></data>
+<data name="MovedInFolderMessage" xml:space="preserve"><value>已在資料夾內移動效果。</value></data>
+<data name="RemovedFromFolderMessage" xml:space="preserve"><value>{0} 已從資料夾 '{1}' 中移除。</value></data>
+<data name="SearchWordSetMessage" xml:space="preserve"><value>已為 {0} 設定搜尋關鍵字。</value></data>
+<data name="NoSelectedItemsMessage" xml:space="preserve"><value>未選取任何可支援的項目。</value></data>
+<data name="AppliedToItemsMessage" xml:space="preserve"><value>{0} 已應用於 {1} 個項目。</value></data>
+<data name="ApplyFailedUnsupported" xml:space="preserve"><value>應用失敗（不支援的項目）。</value></data>
+<data name="ApplyError" xml:space="preserve"><value>套用錯誤: {0}</value></data>
+<data name="ComboSavedMessage" xml:space="preserve"><value>已儲存組合 '{0}'。</value></data>
+<data name="ComboAppliedMessage" xml:space="preserve"><value>已套用組合 '{0}'（{1} 個效果）。</value></data>
+<data name="DeleteActiveEffectTooltip" xml:space="preserve"><value>刪除此效果</value></data>
+<data name="SearchKeywordsTitle" xml:space="preserve"><value>搜尋關鍵字</value></data>
+<data name="SearchKeywordsPromptFormat" xml:space="preserve"><value>請為 {0} 輸入搜尋關鍵字（以逗號分隔）:</value></data>
+<data name="ToolTipDescriptionFormat" xml:space="preserve"><value>{0} ({1})\n類別: {2}\n類型: {3}\n使用次數: {4}\n搜尋關鍵字: {5}</value></data>
+<data name="KindVideo" xml:space="preserve"><value>映像</value></data>
+<data name="KindAudio" xml:space="preserve"><value>音訊</value></data>
+<data name="Favorites" xml:space="preserve"><value>收藏</value></data>
+<data name="TabSearch" xml:space="preserve"><value>搜尋</value></data>
+<data name="SearchPlaceholder" xml:space="preserve"><value>搜尋效果...</value></data>
+<data name="NoRecentText" xml:space="preserve"><value>沒有最近使用的效果</value></data>
+<data name="EffectEtcGroupName" xml:space="preserve"><value>其他</value></data>
+<data name="StandardItemEditorHeader" xml:space="preserve"><value>標準設定</value></data>
+<data name="DisplayModeSplit" xml:space="preserve"><value>分割</value></data>
+<data name="DisplayModeEditorOnly" xml:space="preserve"><value>僅設定</value></data>
+<data name="DisplayModeListOnly" xml:space="preserve"><value>僅清單</value></data>
+<data name="NoItemEditorFound" xml:space="preserve"><value>未能初始化項目設定視圖。</value></data>
+</root>

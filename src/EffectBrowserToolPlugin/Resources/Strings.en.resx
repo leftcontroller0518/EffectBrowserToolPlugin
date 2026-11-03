@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="ToolWindowTitle" xml:space="preserve"><value>Effect Browser</value></data>
+  <data name="SetSearchKeywords" xml:space="preserve"><value>Set search keywords...</value></data>
+  <data name="AddToFolder" xml:space="preserve"><value>Add to folder...</value></data>
+  <data name="ToggleFavorite" xml:space="preserve"><value>Toggle favorite</value></data>
+  <data name="Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="FolderDeleteTooltip" xml:space="preserve"><value>Remove from folder</value></data>
+  <data name="NoFavoritesText" xml:space="preserve"><value>No favorite effects registered</value></data>
+  <data name="TabFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="TabActive" xml:space="preserve"><value>Active</value></data>
+  <data name="GetActiveEffectsButton" xml:space="preserve"><value>Get effects from selected items</value></data>
+  <data name="AddToFolderDialogTitle" xml:space="preserve"><value>Add to folder</value></data>
+  <data name="AddToFolderPrompt" xml:space="preserve"><value>Enter target folder name:</value></data>
+  <data name="DefaultFolderName" xml:space="preserve"><value>Favorites</value></data>
+  <data name="DeleteFolderConfirmTitle" xml:space="preserve"><value>Confirm folder deletion</value></data>
+  <data name="DeleteFolderConfirmMessage" xml:space="preserve"><value>Delete folder '{0}'?\nThis operation cannot be undone.</value></data>
+  <data name="FolderDeletedMessage" xml:space="preserve"><value>Folder '{0}' deleted.</value></data>
+  <data name="AddedToFolderMessage" xml:space="preserve"><value>{0} added to folder '{1}'.</value></data>
+  <data name="HeaderEffectsList" xml:space="preserve"><value>Effects list</value></data>
+  <data name="RefreshButton" xml:space="preserve"><value>Refresh</value></data>
+  <data name="TabHistory" xml:space="preserve"><value>History</value></data>
+  <data name="MovedInFolderMessage" xml:space="preserve"><value>Moved effect within folder.</value></data>
+  <data name="RemovedFromFolderMessage" xml:space="preserve"><value>{0} removed from folder '{1}'.</value></data>
+  <data name="SearchWordSetMessage" xml:space="preserve"><value>Search keywords set for {0}.</value></data>
+  <data name="NoSelectedItemsMessage" xml:space="preserve"><value>No selected items (supported type not found).</value></data>
+  <data name="AppliedToItemsMessage" xml:space="preserve"><value>{0} applied to {1} items.</value></data>
+  <data name="ApplyFailedUnsupported" xml:space="preserve"><value>Apply failed (unsupported item).</value></data>
+  <data name="ApplyError" xml:space="preserve"><value>Apply error: {0}</value></data>
+  <data name="ComboSavedMessage" xml:space="preserve"><value>Saved combo '{0}'.</value></data>
+  <data name="ComboAppliedMessage" xml:space="preserve"><value>Applied combo '{0}' ({1} effects).</value></data>
+  <data name="DeleteActiveEffectTooltip" xml:space="preserve"><value>Delete this effect</value></data>
+  <data name="SearchKeywordsTitle" xml:space="preserve"><value>Search keywords</value></data>
+  <data name="SearchKeywordsPromptFormat" xml:space="preserve"><value>Enter search keywords for {0} (comma separated):</value></data>
+  <data name="ToolTipDescriptionFormat" xml:space="preserve"><value>{0} ({1})\nCategory: {2}\nType: {3}\nApply count: {4}\nKeywords: {5}</value></data>
+  <data name="KindVideo" xml:space="preserve"><value>Video</value></data>
+  <data name="KindAudio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Favorites" xml:space="preserve"><value>Favorites</value></data>
+  <data name="TabSearch" xml:space="preserve"><value>Search</value></data>
+  <data name="SearchPlaceholder" xml:space="preserve"><value>Search effects...</value></data>
+  <data name="NoRecentText" xml:space="preserve"><value>No recently used effects</value></data>
+  <data name="EffectEtcGroupName" xml:space="preserve"><value>Other</value></data>
+</root>

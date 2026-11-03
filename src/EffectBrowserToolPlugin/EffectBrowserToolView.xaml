@@ -1,0 +1,628 @@
+<UserControl x:Class="EffectBrowserToolPlugin.EffectBrowserToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:EffectBrowserToolPlugin"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=local:EffectBrowserToolViewModel}"
+             MinWidth="320" MinHeight="420">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <!-- 共有右クリックメニュー -->
+            <ContextMenu x:Key="EffectItemContextMenu">
+                <MenuItem Header="{x:Static local:Texts.SetSearchKeywords}" Click="SetCustomKeywords_Click" Tag="{Binding}" />
+                <!-- プリセット機能廃止: メニューから削除 -->
+                <MenuItem Header="{x:Static local:Texts.AddToFolder}" Click="AddToFolder_Click" Tag="{Binding}" />
+                <Separator />
+                <MenuItem Header="{x:Static local:Texts.ToggleFavorite}" Click="ToggleFavoriteButton_Click" Tag="{Binding}" />
+            </ContextMenu>
+
+            <!-- リストアイテム表示テンプレート（標準用） -->
+            <DataTemplate x:Key="EffectListItemTemplate" DataType="{x:Type local:EffectEntry}">
+                <Border Margin="2,2,2,4"
+                        Padding="8,6"
+                        CornerRadius="4"
+                        Background="#1A808080"
+                        BorderBrush="#33808080"
+                        BorderThickness="1"
+                        Cursor="Hand"
+                        MouseLeftButtonDown="EffectItem_MouseLeftButtonDown"
+                        ContextMenu="{StaticResource EffectItemContextMenu}"
+                        ToolTip="{Binding ToolTipDescription}">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#3D007ACC" />
+                                    <Setter Property="BorderBrush" Value="#88007ACC" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- お気に入り ⭐ ボタン -->
+                        <Button Grid.Column="0"
+                                Content="{Binding FavoriteStarIcon}"
+                                Foreground="{Binding FavoriteStarColor}"
+                                FontSize="14"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="4,0,8,0"
+                                VerticalAlignment="Center"
+                                Click="ToggleFavoriteButton_Click"
+                                Tag="{Binding}" />
+
+                        <!-- 中央：名前とサブ名 -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Grid.Column="1" Text="🏷️" FontSize="10" Margin="4,0,0,0" Visibility="{Binding HasCustomKeywords, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}" ToolTip="{Binding CustomKeywords}" />
+                            </Grid>
+                            <TextBlock Text="{Binding SubText}"
+                                       FontSize="10"
+                                       Opacity="0.6"
+                                       Margin="0,1,0,0"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+
+                        <Button Grid.Column="2"
+                                                        Content="{x:Static local:Texts.Apply}"
+                                FontSize="11"
+                                Padding="8,2"
+                                VerticalAlignment="Center"
+                                Click="ApplyButton_Click"
+                                Tag="{Binding}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!-- 検索・お気に入りリスト等用（種別バッジ＋カテゴリ付きテンプレート） -->
+            <DataTemplate x:Key="RichListItemTemplate" DataType="{x:Type local:EffectEntry}">
+                <Border Margin="2,2,2,4"
+                        Padding="8,6"
+                        CornerRadius="4"
+                        Background="#1A808080"
+                        BorderBrush="#33808080"
+                        BorderThickness="1"
+                        Cursor="Hand"
+                        MouseLeftButtonDown="EffectItem_MouseLeftButtonDown"
+                        ContextMenu="{StaticResource EffectItemContextMenu}"
+                        ToolTip="{Binding ToolTipDescription}">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#3D007ACC" />
+                                    <Setter Property="BorderBrush" Value="#88007ACC" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- お気に入り ⭐ ボタン -->
+                        <Button Grid.Column="0"
+                                Content="{Binding FavoriteStarIcon}"
+                                Foreground="{Binding FavoriteStarColor}"
+                                FontSize="14"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="4,0,6,0"
+                                VerticalAlignment="Center"
+                                Click="ToggleFavoriteButton_Click"
+                                Tag="{Binding}" />
+
+                        <!-- 種別バッジ (映像: 青系 / 音声: オレンジ系) -->
+                        <Border Grid.Column="1"
+                                Margin="0,0,8,0"
+                                Padding="5,2"
+                                CornerRadius="3"
+                                VerticalAlignment="Center">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#2A007ACC" />
+                                    <Setter Property="BorderBrush" Value="#66007ACC" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Kind}" Value="Audio">
+                                            <Setter Property="Background" Value="#2AE67E22" />
+                                            <Setter Property="BorderBrush" Value="#66E67E22" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding KindText}"
+                                       FontSize="9.5"
+                                       FontWeight="Bold" />
+                        </Border>
+
+                        <!-- エフェクト名とサブテキスト -->
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Grid.Column="1" Text="🏷️" FontSize="10" Margin="4,0,0,0" Visibility="{Binding HasCustomKeywords, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}" ToolTip="{Binding CustomKeywords}" />
+                            </Grid>
+                            <TextBlock Text="{Binding SubText}"
+                                       FontSize="10"
+                                       Opacity="0.6"
+                                       Margin="0,1,0,0"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+
+                        <!-- カテゴリタグ -->
+                        <TextBlock Grid.Column="3"
+                                   Text="{Binding Category}"
+                                   FontSize="11"
+                                   Opacity="0.5"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,8,0" />
+
+                        <Button Grid.Column="4"
+                                                        Content="{x:Static local:Texts.Apply}"
+                                FontSize="11"
+                                Padding="8,2"
+                                VerticalAlignment="Center"
+                                Click="ApplyButton_Click"
+                                Tag="{Binding}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!-- フォルダ用テンプレート：削除ボタンとドラッグハンドルを追加 -->
+            <DataTemplate x:Key="FolderListItemTemplate" DataType="{x:Type local:EffectEntry}">
+                <Border Margin="2,2,2,4"
+                        Padding="8,6"
+                        CornerRadius="4"
+                        Background="#1A808080"
+                        BorderBrush="#33808080"
+                        BorderThickness="1"
+                        Cursor="Hand"
+                        MouseLeftButtonDown="EffectItem_MouseLeftButtonDown"
+                        ContextMenu="{StaticResource EffectItemContextMenu}"
+                        ToolTip="{Binding ToolTipDescription}">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#3D007ACC" />
+                                    <Setter Property="BorderBrush" Value="#88007ACC" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- ドラッグハンドル -->
+                        <TextBlock Grid.Column="0" Text="≡" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#888" />
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding SubText}"
+                                       FontSize="10"
+                                       Opacity="0.6"
+                                       Margin="0,1,0,0"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+
+                        <Button Grid.Column="2"
+                                Content="適用"
+                                FontSize="11"
+                                Padding="8,2"
+                                VerticalAlignment="Center"
+                                Click="ApplyButton_Click"
+                                Tag="{Binding}" />
+
+                        <Button Grid.Column="3"
+                                Content="🗑️"
+                                FontSize="12"
+                                Padding="6,2"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="DeleteFromFolderButton_Click"
+                                Tag="{Binding}"
+                                ToolTip="フォルダから削除" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!-- カテゴリグループテンプレート -->
+            <DataTemplate x:Key="CategoryGroupTemplate" DataType="{x:Type local:EffectCategoryGroup}">
+                <Expander Header="{Binding HeaderText}"
+                          IsExpanded="True"
+                          Margin="2,2,2,6"
+                          FontWeight="Bold">
+                    <ItemsControl ItemsSource="{Binding Effects}"
+                                  ItemTemplate="{StaticResource EffectListItemTemplate}"
+                                  Margin="4,4,2,6">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Expander>
+            </DataTemplate>
+
+            <!-- 適用中エフェクト管理用アイテムテンプレート -->
+            <DataTemplate x:Key="ActiveEffectItemTemplate" DataType="{x:Type local:ActiveEffectViewModel}">
+                <Border Margin="2,2,2,4"
+                        Padding="8,6"
+                        CornerRadius="4"
+                        Background="#1A808080"
+                        BorderBrush="#33808080"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- 有効/無効スイッチ -->
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="{Binding IsEnabled}" 
+                                  VerticalAlignment="Center" 
+                                  Margin="4,0,8,0" />
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13" />
+                            <TextBlock Text="{Binding TypeFullName}" FontSize="9.5" Opacity="0.5" />
+                        </StackPanel>
+
+                        <!-- 削除ボタン -->
+                        <Button Grid.Column="2" 
+                                Content="🗑️" 
+                                Background="Transparent" 
+                                BorderThickness="0" 
+                                FontSize="12"
+                                VerticalAlignment="Center" 
+                                Click="DeleteActiveEffectButton_Click" 
+                                Tag="{Binding}"
+                                ToolTip="このエフェクトを削除" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <!-- ヘッダー：タイトルと更新ボタン -->
+        <DockPanel DockPanel.Dock="Top" Margin="8,6,8,4" LastChildFill="False">
+            <TextBlock Text="{x:Static local:Texts.HeaderEffectsList}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" DockPanel.Dock="Left" />
+            <Button Content="{x:Static local:Texts.RefreshButton}"
+                    Width="64"
+                    Padding="4,2"
+                    DockPanel.Dock="Right"
+                    Click="RefreshButton_Click" />
+        </DockPanel>
+
+        <!-- フッター：ステータスバー -->
+        <Border DockPanel.Dock="Bottom"
+                Margin="4,2,4,4"
+                Padding="6,4"
+                Background="#10808080"
+                CornerRadius="3">
+            <TextBlock Text="{Binding StatusMessage}"
+                       FontSize="11"
+                       Opacity="0.8"
+                       TextTrimming="CharacterEllipsis" />
+        </Border>
+
+        <!-- メインタブ（8タブに拡張） -->
+        <TabControl Margin="4" SelectedIndex="{Binding SelectedTabIndex}" SelectionChanged="TabControl_SelectionChanged">
+
+            <!-- 1. 映像 -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static local:Texts.KindVideo}" />
+                        <TextBlock Text="{Binding VideoEffectCount, StringFormat=' ({0})'}" FontSize="10" Opacity="0.6" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              Padding="2">
+                    <ItemsControl ItemsSource="{Binding VideoEffectGroups}"
+                                  ItemTemplate="{StaticResource CategoryGroupTemplate}" />
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- 2. 音声 -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static local:Texts.KindAudio}" />
+                        <TextBlock Text="{Binding AudioEffectCount, StringFormat=' ({0})'}" FontSize="10" Opacity="0.6" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              Padding="2">
+                    <ItemsControl ItemsSource="{Binding AudioEffectGroups}"
+                                  ItemTemplate="{StaticResource CategoryGroupTemplate}" />
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- 3. お気に入り -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static local:Texts.Favorites}" />
+                        <TextBlock Text="{Binding FavoriteEffectCount, StringFormat=' ({0})'}" FontSize="10" Opacity="0.6" />
+                    </StackPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  VirtualizingPanel.VirtualizationMode="Recycling"
+                                  Padding="2">
+                        <ItemsControl ItemsSource="{Binding FavoriteEffects}"
+                                      ItemTemplate="{StaticResource RichListItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock Text="{x:Static local:Texts.NoFavoritesText}"
+                               FontSize="12" Opacity="0.5"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="0,20,0,0"
+                               Visibility="{Binding HasFavoriteEffects, Converter={x:Static local:EffectBrowserToolView.InverseBooleanToVisibilityConverter}}" />
+                </DockPanel>
+            </TabItem>
+
+            <!-- 4. 履歴 -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static local:Texts.TabHistory}" />
+                        <TextBlock Text="{Binding RecentEffectCount, StringFormat=' ({0})'}" FontSize="10" Opacity="0.6" />
+                    </StackPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  VirtualizingPanel.VirtualizationMode="Recycling"
+                                  Padding="2">
+                        <ItemsControl ItemsSource="{Binding RecentEffects}"
+                                      ItemTemplate="{StaticResource RichListItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock Text="{x:Static local:Texts.NoRecentText}"
+                               FontSize="12" Opacity="0.5"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="0,20,0,0"
+                               Visibility="{Binding HasRecentEffects, Converter={x:Static local:EffectBrowserToolView.InverseBooleanToVisibilityConverter}}" />
+                </DockPanel>
+            </TabItem>
+
+            <!-- 5. フォルダ -->
+            <TabItem Header="{x:Static local:Texts.TabFolder}">
+                <DockPanel Margin="4">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                        <ComboBox x:Name="cmbCustomTags" Width="200" ItemsSource="{Binding CustomTagNames}" SelectedItem="{Binding SelectedCustomTag}" Padding="4" />
+                        <Button x:Name="btnDeleteTag" Content="{x:Static local:Texts.DeleteFolderButton}" Margin="8,0,0,0" Padding="6,2" Click="DeleteCustomTagButton_Click" />
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="folderItemsControl" ItemsSource="{Binding CustomTagEffects}"
+                                      ItemTemplate="{StaticResource FolderListItemTemplate}"
+                                      PreviewMouseLeftButtonDown="FolderItems_PreviewMouseLeftButtonDown"
+                                      MouseMove="FolderItems_MouseMove"
+                                      Drop="FolderItems_Drop"
+                                      DragOver="FolderItems_DragOver">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
+
+            <!-- 7. 適用中 -->
+            <TabItem Header="{x:Static local:Texts.TabActive}">
+                <DockPanel Margin="4">
+                    <!-- 上部コントロールバー -->
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+                        <Button DockPanel.Dock="Left" Content="{x:Static local:Texts.GetActiveEffectsButton}" Padding="8,4" Click="GetActiveEffectsButton_Click" />
+                        
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                                         Content="{x:Static local:Texts.DisplayModeSplit}" 
+                                         IsChecked="{Binding IsSplitMode, Mode=OneWay}" 
+                                         Click="DisplayModeSplit_Click"
+                                         Padding="6,2" Margin="2,0" FontSize="11" />
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                                         Content="{x:Static local:Texts.DisplayModeEditorOnly}" 
+                                         IsChecked="{Binding IsEditorOnlyMode, Mode=OneWay}" 
+                                         Click="DisplayModeEditorOnly_Click"
+                                         Padding="6,2" Margin="2,0" FontSize="11" />
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                                         Content="{x:Static local:Texts.DisplayModeListOnly}" 
+                                         IsChecked="{Binding IsListOnlyMode, Mode=OneWay}" 
+                                         Click="DisplayModeListOnly_Click"
+                                         Padding="6,2" Margin="2,0" FontSize="11" />
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- メインコンテンツ領域（上下分割 / 切替対応） -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!-- 上段: 簡易リスト -->
+                            <RowDefinition MinHeight="0">
+                                <RowDefinition.Style>
+                                    <Style TargetType="RowDefinition">
+                                        <Setter Property="Height" Value="1*" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEditorOnlyMode}" Value="True">
+                                                <Setter Property="Height" Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RowDefinition.Style>
+                            </RowDefinition>
+                            <!-- 中段: GridSplitter -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 下段: YMM4標準エディター -->
+                            <RowDefinition MinHeight="0">
+                                <RowDefinition.Style>
+                                    <Style TargetType="RowDefinition">
+                                        <Setter Property="Height" Value="2*" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsListOnlyMode}" Value="True">
+                                                <Setter Property="Height" Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RowDefinition.Style>
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <!-- 上段: 適用中エフェクト簡易一覧 -->
+                        <Border Grid.Row="0"
+                                Visibility="{Binding IsListVisible, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}"
+                                Background="#0A808080"
+                                BorderBrush="#22808080"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="2">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding SelectedItemsEffects}" ItemTemplate="{StaticResource ActiveEffectItemTemplate}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Vertical" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- 中段: GridSplitter (分割モード時のみ表示) -->
+                        <GridSplitter Grid.Row="1"
+                                      Height="6"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      Background="#18808080"
+                                      Cursor="SizeNS"
+                                      Margin="0,2"
+                                      Visibility="{Binding IsSplitMode, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}" />
+
+                        <!-- 下段: YMM4標準 アイテム・エフェクト設定画面 (ItemEditorView) -->
+                        <Border Grid.Row="2"
+                                Visibility="{Binding IsEditorVisible, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}"
+                                Background="#06808080"
+                                BorderBrush="#33808080"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Top" Background="#14808080" Padding="6,3" BorderBrush="#22808080" BorderThickness="0,0,0,1">
+                                    <TextBlock Text="{x:Static local:Texts.StandardItemEditorHeader}" FontSize="11" FontWeight="SemiBold" Opacity="0.8" />
+                                </Border>
+                                <ContentControl x:Name="itemEditorHost" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- 8. 検索 -->
+            <TabItem Header="{x:Static local:Texts.TabSearch}">
+                <DockPanel Margin="4">
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="SearchInputBox"
+                                 Grid.Column="0"
+                                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="6,4,24,4"
+                                 VerticalContentAlignment="Center"
+                                 FontSize="12" />
+                        <!-- プレースホルダー -->
+                        <TextBlock Grid.Column="0"
+                                                           Text="{x:Static local:Texts.SearchPlaceholder}"
+                                   FontSize="12"
+                                   Foreground="#80FFFFFF"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,0,0"
+                                   IsHitTestVisible="False"
+                                   Visibility="{Binding HasSearchQuery, Converter={x:Static local:EffectBrowserToolView.InverseBooleanToVisibilityConverter}}" />
+                        <Button Grid.Column="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Width="18" Height="18"
+                                Margin="0,0,4,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Content="❌"
+                                FontSize="9"
+                                Click="ClearSearchButton_Click"
+                                Visibility="{Binding HasSearchQuery, Converter={x:Static local:EffectBrowserToolView.BooleanToVisibilityConverter}}" />
+                    </Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding SearchResults}"
+                                      ItemTemplate="{StaticResource RichListItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <!-- 検索結果が空の場合 -->
+                    <TextBlock Text="該当するエフェクトが見つかりません"
+                               FontSize="12" Opacity="0.5"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="0,20,0,0"
+                               Visibility="{Binding HasSearchResults, Converter={x:Static local:EffectBrowserToolView.InverseBooleanToVisibilityConverter}}" />
+                </DockPanel>
+            </TabItem>
+
+        </TabControl>
+
+    </DockPanel>
+
+</UserControl>

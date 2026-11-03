@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+<data name="CurrentCulture" xml:space="preserve"><value>en-us</value></data>
+<data name="ToolWindowTitle" xml:space="preserve"><value>Effect Browser</value></data>
+<data name="SetSearchKeywords" xml:space="preserve"><value>Set search keywords...</value></data>
+<data name="AddToFolder" xml:space="preserve"><value>Add to folder...</value></data>
+<data name="ToggleFavorite" xml:space="preserve"><value>Toggle favorite</value></data>
+<data name="Apply" xml:space="preserve"><value>Apply</value></data>
+<data name="FolderDeleteTooltip" xml:space="preserve"><value>Remove from folder</value></data>
+<data name="NoFavoritesText" xml:space="preserve"><value>No favorite effects registered</value></data>
+<data name="TabFolder" xml:space="preserve"><value>Folder</value></data>
+<data name="TabActive" xml:space="preserve"><value>Active</value></data>
+<data name="GetActiveEffectsButton" xml:space="preserve"><value>Get effects from selected items</value></data>
+<data name="AddToFolderDialogTitle" xml:space="preserve"><value>Add to folder</value></data>
+<data name="AddToFolderPrompt" xml:space="preserve"><value>Enter target folder name:</value></data>
+<data name="DefaultFolderName" xml:space="preserve"><value>Favorites</value></data>
+<data name="DeleteFolderConfirmTitle" xml:space="preserve"><value>Confirm folder deletion</value></data>
+<data name="DeleteFolderConfirmMessage" xml:space="preserve"><value>Delete folder '{0}'?\nThis operation cannot be undone.</value></data>
+<data name="DeleteFolderButton" xml:space="preserve"><value>Delete folder</value></data>
+<data name="FolderDeletedMessage" xml:space="preserve"><value>Folder '{0}' deleted.</value></data>
+<data name="AddedToFolderMessage" xml:space="preserve"><value>{0} added to folder '{1}'.</value></data>
+<data name="HeaderEffectsList" xml:space="preserve"><value>Effects list</value></data>
+<data name="RefreshButton" xml:space="preserve"><value>Refresh</value></data>
+<data name="TabHistory" xml:space="preserve"><value>History</value></data>
+<data name="MovedInFolderMessage" xml:space="preserve"><value>Moved effect within folder.</value></data>
+<data name="RemovedFromFolderMessage" xml:space="preserve"><value>{0} removed from folder '{1}'.</value></data>
+<data name="SearchWordSetMessage" xml:space="preserve"><value>Search keywords set for {0}.</value></data>
+<data name="NoSelectedItemsMessage" xml:space="preserve"><value>No selected items (supported type not found).</value></data>
+<data name="AppliedToItemsMessage" xml:space="preserve"><value>{0} applied to {1} items.</value></data>
+<data name="ApplyFailedUnsupported" xml:space="preserve"><value>Apply failed (unsupported item).</value></data>
+<data name="ApplyError" xml:space="preserve"><value>Apply error: {0}</value></data>
+<data name="ComboSavedMessage" xml:space="preserve"><value>Saved combo '{0}'.</value></data>
+<data name="ComboAppliedMessage" xml:space="preserve"><value>Applied combo '{0}' ({1} effects).</value></data>
+<data name="DeleteActiveEffectTooltip" xml:space="preserve"><value>Delete this effect</value></data>
+<data name="SearchKeywordsTitle" xml:space="preserve"><value>Search keywords</value></data>
+<data name="SearchKeywordsPromptFormat" xml:space="preserve"><value>Enter search keywords for {0} (comma separated):</value></data>
+<data name="ToolTipDescriptionFormat" xml:space="preserve"><value>{0} ({1})\nCategory: {2}\nType: {3}\nApply count: {4}\nKeywords: {5}</value></data>
+<data name="KindVideo" xml:space="preserve"><value>Video</value></data>
+<data name="KindAudio" xml:space="preserve"><value>Audio</value></data>
+<data name="Favorites" xml:space="preserve"><value>Favorites</value></data>
+<data name="TabSearch" xml:space="preserve"><value>Search</value></data>
+<data name="SearchPlaceholder" xml:space="preserve"><value>Search effects...</value></data>
+<data name="NoRecentText" xml:space="preserve"><value>No recently used effects</value></data>
+<data name="EffectEtcGroupName" xml:space="preserve"><value>Other</value></data>
+<data name="StandardItemEditorHeader" xml:space="preserve"><value>Standard Settings</value></data>
+<data name="DisplayModeSplit" xml:space="preserve"><value>Split</value></data>
+<data name="DisplayModeEditorOnly" xml:space="preserve"><value>Settings Only</value></data>
+<data name="DisplayModeListOnly" xml:space="preserve"><value>List Only</value></data>
+<data name="NoItemEditorFound" xml:space="preserve"><value>Failed to initialize item settings view.</value></data>
+</root>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+
+  <data name="ToolWindowTitle" xml:space="preserve"><value>エフェクトブラウザ</value></data>
+  <data name="SetSearchKeywords" xml:space="preserve"><value>検索ワードを設定...</value></data>
+  <data name="AddToFolder" xml:space="preserve"><value>フォルダに追加...</value></data>
+  <data name="ToggleFavorite" xml:space="preserve"><value>お気に入りを切り替え</value></data>
+  <data name="Apply" xml:space="preserve"><value>適用</value></data>
+  <data name="FolderDeleteTooltip" xml:space="preserve"><value>フォルダから削除</value></data>
+  <data name="NoFavoritesText" xml:space="preserve"><value>お気に入りに登録されたエフェクトはありません</value></data>
+  <data name="Favorites" xml:space="preserve"><value>お気に入り</value></data>
+  <data name="TabFolder" xml:space="preserve"><value>フォルダ</value></data>
+  <data name="TabActive" xml:space="preserve"><value>適用中</value></data>
+  <data name="GetActiveEffectsButton" xml:space="preserve"><value>選択中アイテムのエフェクトを取得</value></data>
+  <data name="AddToFolderDialogTitle" xml:space="preserve"><value>フォルダに追加</value></data>
+  <data name="AddToFolderPrompt" xml:space="preserve"><value>追加先のフォルダ名を入力してください:</value></data>
+  <data name="DefaultFolderName" xml:space="preserve"><value>お気に入り</value></data>
+  <data name="DeleteFolderConfirmTitle" xml:space="preserve"><value>フォルダ削除の確認</value></data>
+  <data name="DeleteFolderConfirmMessage" xml:space="preserve"><value>フォルダ '{0}' を削除しますか？\nこの操作は元に戻せません。</value></data>
+  <data name="DeleteFolderButton" xml:space="preserve"><value>フォルダ削除</value></data>
+  <data name="FolderDeletedMessage" xml:space="preserve"><value>フォルダ「{0}」を削除しました。</value></data>
+  <data name="AddedToFolderMessage" xml:space="preserve"><value>{0} をフォルダ「{1}」に追加しました。</value></data>
+  <data name="HeaderEffectsList" xml:space="preserve"><value>エフェクト一覧</value></data>
+  <data name="RefreshButton" xml:space="preserve"><value>更新</value></data>
+  <data name="TabHistory" xml:space="preserve"><value>履歴</value></data>
+  <data name="MovedInFolderMessage" xml:space="preserve"><value>フォルダ内のエフェクトを移動しました。</value></data>
+  <data name="RemovedFromFolderMessage" xml:space="preserve"><value>{0} をフォルダ「{1}」から削除しました。</value></data>
+  <data name="SearchWordSetMessage" xml:space="preserve"><value>{0} の検索ワードを設定しました。</value></data>
+  <data name="NoSelectedItemsMessage" xml:space="preserve"><value>選択中のアイテム（対応タイプ）がありません。</value></data>
+  <data name="AppliedToItemsMessage" xml:space="preserve"><value>{0} を {1} 件のアイテムに適用しました。</value></data>
+  <data name="ApplyFailedUnsupported" xml:space="preserve"><value>適用に失敗しました（対応していないアイテムです）。</value></data>
+  <data name="ApplyError" xml:space="preserve"><value>適用エラー: {0}</value></data>
+  <data name="ComboSavedMessage" xml:space="preserve"><value>コンボ「{0}」を保存しました。</value></data>
+  <data name="ComboAppliedMessage" xml:space="preserve"><value>コンボ「{0}」のエフェクト（{1}個）を適用しました。</value></data>
+  <data name="DeleteActiveEffectTooltip" xml:space="preserve"><value>このエフェクトを削除</value></data>
+  <data name="SearchKeywordsTitle" xml:space="preserve"><value>検索ワード</value></data>
+  <data name="SearchKeywordsPromptFormat" xml:space="preserve"><value>{0} の検索ワードを入力してください（カンマ区切り）:</value></data>
+  <data name="ToolTipDescriptionFormat" xml:space="preserve"><value>{0} ({1})
+カテゴリ: {2}
+型: {3}
+使用回数: {4}
+検索ワード: {5}</value></data>
+  <data name="KindVideo" xml:space="preserve"><value>映像</value></data>
+  <data name="KindAudio" xml:space="preserve"><value>音声</value></data>
+  <data name="TabSearch" xml:space="preserve"><value>検索</value></data>
+  <data name="SearchPlaceholder" xml:space="preserve"><value>エフェクト名で検索...</value></data>
+  <data name="NoRecentText" xml:space="preserve"><value>最近使用したエフェクトはありません</value></data>
+  <data name="EffectEtcGroupName" xml:space="preserve"><value>その他</value></data>
+</root>
